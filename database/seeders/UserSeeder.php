@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\Job;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
-class JobListingSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
-     * Run the job listing seeder.
+     * Run the user seeder.
      *
      * @return void
      */
     public function run(): void
     {
-        Job::factory()->count(50)->create();
+        User::factory()->count(10)->create();
     }
 }

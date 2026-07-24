@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function jobs()
     {
-        $jobs = Job::with('employer')->paginate(15);
+        $jobs = Job::with('employer')->simplePaginate(15);
         return view('jobs', compact('jobs'));
     }
 
