@@ -31,16 +31,12 @@ class JobsController extends Controller
     /**
      * Display the job details.
      *
-     * @param int $id
+     * @param \App\Models\Job $job
      * @return \Illuminate\View\View
      */
-    public function show(int $id)
+    public function show(Job $job)
     {
-        $job = Job::with('employer')->find($id);
-        if (!$job) {
-            abort(404);
-        }
-        return view('jobs.show', compact('job'));
+        return view('jobs.show', ['job' => $job]);
     }
 
     /**
@@ -68,47 +64,45 @@ class JobsController extends Controller
     /**
      * Display the job edit form.
      *
-     * @param int $id
+     * @param \App\Models\Job $job
      * @return \Illuminate\View\View
      */
-    public function edit(int $id)
+    public function edit(Job $job)
     {
-        $job = Job::findOrFail($id);
-        return view('jobs.edit', compact('job'));
+        return view('jobs.edit', ['job' => $job]);
     }
 
     /**
      * Update the job in the database.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param Job $job
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, Job $job)
     {
         $request->validate([
             'title' => 'required|min:3',
             'salary' => 'required|numeric',
         ]);
 
-        $job = Job::findOrFail($id);
-        $job->update([
-            'title' => $request->title,
-            'salary' => $request->salary,
-        ]);
-        return redirect()->route('jobs.show', $id);
+        $job->title = $request->title;
+        $job->salary = $request->salary;
+        $job->update();
+
+        return redirect()->route('jobs.show', $job);
     }
 
     /**
      * Delete the job from the database.
      *
-     * @param int $id
+     * @param Job $job
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(Job $job)
     {
-        $job = Job::findOrFail($id);
         $job->delete();
+
         return redirect()->route('jobs.index');
     }
 }
